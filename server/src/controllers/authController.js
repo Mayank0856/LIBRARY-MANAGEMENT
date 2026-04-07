@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { User, Role } = require('../models');
+const { logAction } = require('../utils/logger');
 
 exports.login = async (req, res) => {
   try {
@@ -28,6 +29,14 @@ exports.login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
+
+    await logAction({
+      user_id: user.id,
+      user_name: user.name,
+      action: 'USER_LOGIN',
+      details: 'User logged into the system',
+      ip_address: req.ip
+    });
 
     res.json({
       message: 'Login successful',
@@ -61,6 +70,14 @@ exports.register = async (req, res) => {
       enrollment_no,
       department,
       role_id: studentRole.id
+    });
+
+    await logAction({
+      user_id: newUser.id,
+      user_name: newUser.name,
+      action: 'USER_SIGNUP',
+      details: 'User registered via public portal',
+      ip_address: req.ip
     });
 
     res.status(201).json({ message: 'User registered successfully!' });

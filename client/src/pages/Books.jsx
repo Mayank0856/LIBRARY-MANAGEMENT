@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import api from '../services/api';
-import { Search, Plus, Edit2, Trash2, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Plus, Edit2, Trash2, X, ChevronLeft, ChevronRight, QrCode } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { QRCodeSVG } from 'qrcode.react';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -114,6 +114,7 @@ const Books = () => {
   const [publishers, setPublishers] = useState([]);
   const [search, setSearch] = useState('');
   const [modal, setModal] = useState(null); // null | 'add' | book object
+  const [qrModal, setQrModal] = useState(null); // book object
   const [page, setPage] = useState(1);
 
   const fetchBooks = () => api.get('/books').then(r => setBooks(r.data));
@@ -194,6 +195,9 @@ const Books = () => {
                 {canEdit && (
                   <td className="px-4 py-3 text-center">
                     <div className="flex items-center justify-center gap-2">
+                       <button className="p-1.5 hover:bg-gray-100 text-gray-600 rounded" title="View QR" onClick={() => setQrModal(book)}>
+                        <QrCode size={15} />
+                      </button>
                       <button className="p-1.5 hover:bg-indigo-50 text-indigo-600 rounded" onClick={() => setModal(book)}>
                         <Edit2 size={15} />
                       </button>
@@ -229,6 +233,28 @@ const Books = () => {
           onClose={() => setModal(null)}
           onSaved={() => { setModal(null); fetchBooks(); }}
         />
+      )}
+
+      {qrModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl p-8 flex flex-col items-center gap-6 shadow-2xl relative max-w-sm w-full mx-auto">
+             <button onClick={() => setQrModal(null)} className="absolute top-4 right-4 p-1 hover:bg-gray-100 rounded-full transition">
+                <X size={20} />
+             </button>
+             <div className="text-center">
+                <h3 className="text-xl font-bold text-gray-900">{qrModal.title}</h3>
+                <p className="text-sm text-gray-500 mt-1">Scan to pull up record</p>
+             </div>
+             <div className="p-4 bg-white border-4 border-indigo-600 rounded-xl">
+                <QRCodeSVG value={JSON.stringify({ id: qrModal.id, type: 'BOOK', isbn: qrModal.isbn })} size={200} />
+             </div>
+             <div className="text-center py-2 px-4 bg-gray-50 rounded-lg w-full">
+                <p className="text-xs text-gray-500 uppercase font-bold tracking-widest leading-none">ISBN</p>
+                <p className="text-sm font-mono mt-1">{qrModal.isbn || 'N/A'}</p>
+             </div>
+             <button onClick={() => window.print()} className="btn btn-secondary w-full">Print Label</button>
+          </div>
+        </div>
       )}
     </div>
   );

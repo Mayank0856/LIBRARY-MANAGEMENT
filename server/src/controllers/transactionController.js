@@ -1,5 +1,6 @@
 const { IssuedBook, Book, Fine, User } = require('../models');
 const { Op } = require('sequelize');
+const { logAction } = require('../utils/logger');
 
 const FINE_PER_DAY = 5; // ₹5 per day
 
@@ -28,6 +29,14 @@ exports.issueBook = async (req, res) => {
     });
 
     await book.decrement('available_copies');
+
+    await logAction({
+      user_id: req.user.id,
+      user_name: req.user.name,
+      action: 'BOOK_ISSUED',
+      details: `Book ${book.title} issued to student ID: ${student_id}`,
+      ip_address: req.ip
+    });
 
     res.status(201).json({ message: 'Book issued successfully', issue });
   } catch (error) {
@@ -63,6 +72,14 @@ exports.returnBook = async (req, res) => {
         });
       }
     }
+
+    await logAction({
+      user_id: req.user.id,
+      user_name: req.user.name,
+      action: 'BOOK_RETURNED',
+      details: `Book ${issue.Book.title} returned by student ID: ${issue.student_id}. Fine generated: ${fine ? fine.amount : 0}`,
+      ip_address: req.ip
+    });
 
     res.json({ message: 'Book returned successfully', fine: fine ? fine.amount : null });
   } catch (error) {

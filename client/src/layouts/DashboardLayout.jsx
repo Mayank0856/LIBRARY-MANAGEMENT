@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Navigate, Outlet, Link, useLocation } from 'react-router-dom';
 import {
-  LogOut, BookOpen, Users, Settings, LayoutDashboard,
-  RotateCcw, AlertTriangle, DollarSign, Menu, X, Library
+  LogOut, BookOpen, Users, Settings as SettingsIcon, LayoutDashboard,
+  RotateCcw, AlertTriangle, DollarSign, Menu, X, Library, FileText
 } from 'lucide-react';
 
 const NavLink = ({ to, icon, label }) => {
@@ -53,13 +53,14 @@ const DashboardLayout = () => {
             <NavLink to="/transactions/return" icon={<RotateCcw size={18} />} label="Return Book" />
             <NavLink to="/overdue" icon={<AlertTriangle size={18} />} label="Overdue Books" />
             <NavLink to="/fines" icon={<DollarSign size={18} />} label="Fines" />
+            <NavLink to="/reports" icon={<FileText size={18} />} label="Reports" />
           </>
         )}
 
         {isAdmin && (
           <>
             <p className="text-xs text-gray-500 uppercase px-3 py-2 mt-3 tracking-wider">Admin</p>
-            <NavLink to="/settings" icon={<Settings size={18} />} label="Settings" />
+            <NavLink to="/settings" icon={<SettingsIcon size={18} />} label="Settings" />
           </>
         )}
       </nav>

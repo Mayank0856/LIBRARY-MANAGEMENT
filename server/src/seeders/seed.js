@@ -69,6 +69,12 @@ async function seedDatabase() {
       publisher_id: pub2.id
     });
 
+    // 5. Default Settings
+    const { Setting } = require('../models');
+    await Setting.create({ key: 'fine_per_day', value: '5', description: 'Fine amount per day in Rupees' });
+    await Setting.create({ key: 'max_books', value: '3', description: 'Max books a student can borrow' });
+    await Setting.create({ key: 'return_days', value: '14', description: 'Default return period in days' });
+
     console.log('Seed completed successfully!');
     process.exit(0);
 
