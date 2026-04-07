@@ -13,6 +13,18 @@ const FeatureCard = ({ icon, title, text }) => (
 );
 
 const Home = () => {
+  const navigate = React.useMemo(() => {
+    const fn = (q) => window.location.href = `/catalog?q=${encodeURIComponent(q)}`;
+    return fn;
+  }, []);
+  const [q, setQ] = React.useState('');
+
+  const handleSearch = (e) => {
+    if (e.key === 'Enter') {
+      window.location.href = `/catalog?q=${encodeURIComponent(q)}`;
+    }
+  };
+
   return (
     <div className="space-y-24 pb-20">
       {/* Hero Section */}
@@ -90,6 +102,9 @@ const Home = () => {
                   type="text" 
                   placeholder="ISBN or Book Title..." 
                   className="w-full bg-gray-800 border-none rounded-2xl pl-12 pr-4 py-4 text-white focus:ring-2 focus:ring-indigo-600"
+                  value={q}
+                  onChange={(e) => setQ(e.target.value)}
+                  onKeyDown={handleSearch}
                />
             </div>
           </div>

@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { useAuth } from './context/AuthContext';
 
 // Layouts
@@ -11,6 +12,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import Catalog from './pages/Catalog';
 
 // Dashboard Pages
 import Dashboard from './pages/Dashboard';
@@ -22,6 +24,8 @@ import Overdue from './pages/Overdue';
 import Fines from './pages/Fines';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
+import Masters from './pages/Masters';
+import Logs from './pages/Logs';
 
 const NotFound = () => (
   <div className="text-center py-20 bg-white min-h-screen">
@@ -46,13 +50,16 @@ function App() {
   );
 
   return (
-    <Router>
-      <Routes>
+    <>
+      <Toaster position="top-right" />
+      <Router>
+        <Routes>
         {/* Public Routes */}
         <Route element={<PublicLayout />}>
            <Route path="/" element={<Home />} />
            <Route path="/about" element={<About />} />
            <Route path="/contact" element={<Contact />} />
+           <Route path="/catalog" element={<Catalog />} />
         </Route>
 
         <Route path="/login" element={<Login />} />
@@ -68,6 +75,8 @@ function App() {
           <Route path="fines" element={<Fines />} />
           <Route path="reports" element={<Reports />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="masters" element={<Masters />} />
+          <Route path="logs" element={<Logs />} />
           <Route path="*" element={<Link to="/dashboard" className="hidden" />} />
         </Route>
 

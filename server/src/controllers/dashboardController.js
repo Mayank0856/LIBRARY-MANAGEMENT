@@ -3,6 +3,35 @@ const { Op } = require('sequelize');
 
 exports.getDashboardStats = async (req, res) => {
   try {
+    const isAdmin = req.user.role === 'Admin' || req.user.role === 'Librarian';
+
+    if (!isAdmin) {
+      // Student specific stats
+      const myIssued = await IssuedBook.count({
+        where: { student_id: req.user.id, status: ['Issued', 'Overdue'] }
+      });
+      const myOverdue = await IssuedBook.count({
+        where: { 
+          student_id: req.user.id, 
+          status: 'Issued',
+          due_date: { [Op.lt]: new Date() }
+        }
+      });
+      const myFines = await Fine.findAll({
+        where: { student_id: req.user.id, status: 'Unpaid' },
+        attributes: ['amount']
+      });
+      const totalFine = myFines.reduce((sum, f) => sum + parseFloat(f.amount), 0);
+
+      return res.json({
+        totalIssued: myIssued,
+        totalOverdue: myOverdue,
+        finesPending: totalFine.toFixed(2),
+        totalBooks: await Book.count() // still useful for them
+      });
+    }
+
+    // Admin/Librarian Global stats
     const totalBooks = await Book.count();
     const availableBooks = await Book.sum('available_copies');
     const totalMembers = await User.count({

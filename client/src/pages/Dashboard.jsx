@@ -48,10 +48,21 @@ const Dashboard = () => {
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <StatCard title="Total Books" value={stats?.totalBooks ?? '...'} icon={<BookOpen size={24} />} color="bg-indigo-600" />
-        <StatCard title="Active Members" value={stats?.totalMembers ?? '...'} icon={<Users size={24} />} color="bg-emerald-600" />
-        <StatCard title="Books Issued" value={stats?.totalIssued ?? '...'} icon={<Clock size={24} />} color="bg-blue-600" />
-        <StatCard title="Overdue Books" value={stats?.totalOverdue ?? '...'} icon={<AlertCircle size={24} />} color="bg-orange-500" />
+        {user.role === 'Student' ? (
+          <>
+            <StatCard title="My Active Issues" value={stats?.totalIssued ?? '...'} icon={<Clock size={24} />} color="bg-indigo-600" />
+            <StatCard title="My Overdue Books" value={stats?.totalOverdue ?? '...'} icon={<AlertCircle size={24} />} color="bg-rose-600" />
+            <StatCard title="Total Fine Due" value={stats?.finesPending ? `₹${stats.finesPending}` : '₹0'} icon={<DollarSign size={24} />} color="bg-amber-600" />
+            <StatCard title="Library Books" value={stats?.totalBooks ?? '...'} icon={<Library size={24} />} color="bg-blue-600" />
+          </>
+        ) : (
+          <>
+            <StatCard title="Total Books" value={stats?.totalBooks ?? '...'} icon={<BookOpen size={24} />} color="bg-indigo-600" />
+            <StatCard title="Active Members" value={stats?.totalMembers ?? '...'} icon={<Users size={24} />} color="bg-emerald-600" />
+            <StatCard title="Books Issued" value={stats?.totalIssued ?? '...'} icon={<Clock size={24} />} color="bg-blue-600" />
+            <StatCard title="Overdue Books" value={stats?.totalOverdue ?? '...'} icon={<AlertCircle size={24} />} color="bg-orange-500" />
+          </>
+        )}
       </div>
 
       {(user.role === 'Admin' || user.role === 'Librarian') && (
@@ -82,14 +93,23 @@ const Dashboard = () => {
       </div>
 
       {/* Quick Actions */}
-      {(user.role === 'Admin' || user.role === 'Librarian') && (
+      {user.role === 'Student' ? (
+        <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">Quick Student Actions</h2>
+          <div className="flex flex-wrap gap-3">
+            <Link to="/catalog" className="btn btn-primary">Browse Catalog</Link>
+            <Link to="/books" className="btn btn-secondary">My History</Link>
+            <Link to="/contact" className="bg-emerald-600 text-white btn hover:bg-emerald-700">Contact Librarian</Link>
+          </div>
+        </div>
+      ) : (
         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h2>
           <div className="flex flex-wrap gap-3">
-            <Link to="/books/add" className="btn btn-primary">+ Add Book</Link>
+            <Link to="/books" className="btn btn-primary">+ Add Book</Link>
             <Link to="/transactions/issue" className="bg-emerald-600 text-white btn hover:bg-emerald-700">Issue Book</Link>
             <Link to="/transactions/return" className="bg-orange-500 text-white btn hover:bg-orange-600">Return Book</Link>
-            <Link to="/members/add" className="bg-blue-600 text-white btn hover:bg-blue-700">Add Member</Link>
+            <Link to="/members" className="bg-blue-600 text-white btn hover:bg-blue-700">Add Member</Link>
           </div>
         </div>
       )}
