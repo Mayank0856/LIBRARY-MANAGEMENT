@@ -26,6 +26,7 @@ import Reports from './pages/Reports';
 import Settings from './pages/Settings';
 import Masters from './pages/Masters';
 import Logs from './pages/Logs';
+import Profile from './pages/Profile';
 
 const NotFound = () => (
   <div className="text-center py-20 bg-white min-h-screen">
@@ -77,12 +78,14 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="masters" element={<Masters />} />
           <Route path="logs" element={<Logs />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="*" element={<Link to="/dashboard" className="hidden" />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </Router>
+      </Router>
+    </>
   );
 }
 

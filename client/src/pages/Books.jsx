@@ -2,6 +2,7 @@ import api from '../services/api';
 import { Search, Plus, Edit2, Trash2, X, ChevronLeft, ChevronRight, QrCode } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { QRCodeSVG } from 'qrcode.react';
+import toast from 'react-hot-toast';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -27,9 +28,12 @@ const BookModal = ({ book, categories, authors, publishers, onClose, onSaved }) 
     try {
       if (isEdit) await api.put(`/books/${book.id}`, form);
       else await api.post('/books', form);
+      toast.success(isEdit ? 'Book updated!' : 'Book added to catalog');
       onSaved();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to save book');
+      const msg = err.response?.data?.message || 'Failed to save book';
+      setError(msg);
+      toast.error(msg);
     }
   };
 
@@ -128,8 +132,13 @@ const Books = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this book?')) return;
-    await api.delete(`/books/${id}`);
-    fetchBooks();
+    try {
+      await api.delete(`/books/${id}`);
+      toast.success('Book deleted');
+      fetchBooks();
+    } catch (err) {
+      toast.error('Failed to delete book');
+    }
   };
 
   const filtered = books.filter(b =>

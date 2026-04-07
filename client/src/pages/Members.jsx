@@ -12,8 +12,15 @@ const MemberModal = ({ member, onClose, onSaved }) => {
     enrollment_no: member?.enrollment_no || '',
     department: member?.department || '',
     address: member?.address || '',
+    role_id: member?.role_id || '',
+    status: member?.status || 'Active',
   });
   const [error, setError] = useState('');
+  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+    api.get('/roles').then(r => setRoles(r.data)).catch(() => {});
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,7 +79,24 @@ const MemberModal = ({ member, onClose, onSaved }) => {
             <label className="block text-sm font-medium mb-1">Address</label>
             <textarea className="input" rows={2} value={form.address} onChange={set('address')} />
           </div>
-          <div className="flex justify-end gap-3">
+          <div className="grid grid-cols-2 gap-4">
+             <div>
+                <label className="block text-sm font-medium mb-1">Role *</label>
+                <select className="input font-bold" required value={form.role_id} onChange={set('role_id')}>
+                   <option value="">Select Role</option>
+                   {roles.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}
+                </select>
+             </div>
+             <div>
+                <label className="block text-sm font-medium mb-1">Account Status</label>
+                <select className="input" required value={form.status} onChange={set('status')}>
+                   <option value="Active">Active</option>
+                   <option value="Inactive">Inactive</option>
+                   <option value="Suspended">Suspended</option>
+                </select>
+             </div>
+          </div>
+          <div className="flex justify-end gap-3 pt-4">
             <button type="button" onClick={onClose} className="btn btn-secondary">Cancel</button>
             <button type="submit" className="btn btn-primary">{isEdit ? 'Update' : 'Add Member'}</button>
           </div>

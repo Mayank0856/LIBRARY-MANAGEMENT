@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import { BookOpen, CheckCircle, AlertCircle } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 const IssueBook = () => {
   const [books, setBooks] = useState([]);
@@ -18,11 +19,11 @@ const IssueBook = () => {
     setMsg(null);
     try {
       await api.post('/transactions/issue', form);
-      setMsg({ type: 'success', text: 'Book issued successfully! Due in 14 days.' });
+      toast.success('Book issued successfully! Due in 14 days.');
       setForm({ book_id: '', student_id: '' });
       api.get('/books').then(r => setBooks(r.data.filter(b => b.available_copies > 0)));
     } catch (err) {
-      setMsg({ type: 'error', text: err.response?.data?.message || 'Failed to issue book' });
+      toast.error(err.response?.data?.message || 'Failed to issue book');
     }
   };
 

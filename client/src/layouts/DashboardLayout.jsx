@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { Navigate, Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LogOut, BookOpen, Users, Settings as SettingsIcon, LayoutDashboard,
-  RotateCcw, AlertTriangle, DollarSign, Menu, X, Library, FileText
+  RotateCcw, AlertTriangle, DollarSign, Menu, X, Library, FileText, User as UserIcon
 } from 'lucide-react';
 
 const NavLink = ({ to, icon, label }) => {
@@ -60,13 +60,16 @@ const DashboardLayout = () => {
         {isAdmin && (
           <>
             <p className="text-xs text-gray-500 uppercase px-3 py-2 mt-3 tracking-wider">Admin</p>
-            <NavLink to="/settings" icon={<SettingsIcon size={18} />} label="Settings" />
+            <NavLink to="/masters" icon={<Library size={18} />} label="Master Data" />
+            <NavLink to="/logs" icon={<SettingsIcon size={18} />} label="Activity Logs" />
+            <NavLink to="/settings" icon={<SettingsIcon size={18} />} label="System Settings" />
           </>
         )}
       </nav>
 
-      <div className="p-4 border-t border-gray-700">
-        <div className="flex items-center justify-between gap-2">
+      <div className="p-4 border-t border-gray-700 space-y-4">
+        <NavLink to="/profile" icon={<UserIcon size={18} />} label="My Profile" />
+        <div className="flex items-center justify-between gap-2 pt-2 border-t border-gray-800">
           <div className="min-w-0">
             <p className="text-sm font-semibold text-white truncate">{user.name}</p>
             <p className="text-xs text-gray-400 truncate">{user.email}</p>
