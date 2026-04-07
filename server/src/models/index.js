@@ -7,6 +7,7 @@ const Publisher = require('./Publisher');
 const Book = require('./Book');
 const IssuedBook = require('./IssuedBook');
 const Fine = require('./Fine');
+const Setting = require('./Setting');
 
 // Relationships
 
@@ -55,5 +56,6 @@ module.exports = {
   Publisher,
   Book,
   IssuedBook,
-  Fine
+  Fine,
+  Setting
 };
