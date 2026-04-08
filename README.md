@@ -27,13 +27,13 @@ A full-stack, production-ready Library Management System for colleges and school
 
 ```
 library-management-system/
-├── client/           # React Frontend
+├── frontend/           # React Frontend
 │   └── src/
 │       ├── context/          # AuthContext
 │       ├── layouts/          # DashboardLayout
 │       ├── pages/            # All page components
 │       └── services/         # Axios API service
-└── server/           # Node.js Backend
+└── backend/            # Node.js Backend
     └── src/
         ├── config/           # DB connection
         ├── controllers/      # Route handlers
@@ -56,7 +56,7 @@ CREATE DATABASE lms_db;
 
 ### 2. Backend Setup
 ```bash
-cd server
+cd backend
 # Update .env with your DB credentials
 npm install
 npm run seed    # Creates tables + sample data
@@ -65,7 +65,7 @@ npm run dev     # Starts server on :5000
 
 ### 3. Frontend Setup
 ```bash
-cd client
+cd frontend
 npm install
 npm run dev     # Starts frontend on :5173
 ```
@@ -81,7 +81,7 @@ Go to: **http://localhost:5173**
 | Librarian | librarian@library.com      | password123  |
 | Student   | student@library.com        | password123  |
 
-## 🌍 Environment Variables (`server/.env`)
+## 🌍 Environment Variables (`backend/.env`)
 
 ```
 PORT=5000

@@ -29,40 +29,50 @@ const Home = () => {
     <div className="space-y-24 pb-20">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-20 pb-16 lg:pt-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
-          <span className="bg-indigo-50 text-indigo-600 px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-widest mb-6">
-            Intelligent Library Management
+        {/* Background Blobs */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 pointer-events-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-200/30 rounded-full blur-[120px] animate-pulse"></div>
+          <div className="absolute bottom-[10%] right-[-10%] w-[30%] h-[30%] bg-purple-200/30 rounded-full blur-[100px]"></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center animate-fade-in">
+          <span className="bg-indigo-50 text-indigo-600 px-4 py-1.5 rounded-full text-sm font-black uppercase tracking-widest mb-6 shadow-sm border border-indigo-100">
+            ✨ Intelligent Library Management
           </span>
-          <h1 className="text-5xl lg:text-7xl font-extrabold text-gray-900 leading-[1.1] mb-8">
-            Manage your library with <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">effortless precision.</span>
+          <h1 className="text-5xl lg:text-8xl font-black text-gray-900 leading-[1.05] mb-8 tracking-tight">
+            Manage your library <br/> with <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-[length:200%_auto] animate-gradient-x bg-clip-text text-transparent">effortless precision.</span>
           </h1>
-          <p className="max-w-2xl text-xl text-gray-600 mb-10 leading-relaxed">
+          <p className="max-w-2xl text-xl text-gray-600 mb-10 leading-relaxed font-medium">
             The all-in-one system for schools and colleges to automate book tracking, member records, and fine collection with a stunning modern interface.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
-            <Link to="/login" className="btn btn-primary text-lg px-10 py-4 rounded-2xl flex items-center justify-center gap-2 shadow-xl shadow-indigo-200">
-              Get Started Now <ArrowRight size={20} />
+          <div className="flex flex-col sm:flex-row gap-6 w-full justify-center">
+            <Link to="/login" className="btn btn-primary text-lg px-12 py-5 rounded-2xl flex items-center justify-center gap-3 shadow-2xl shadow-indigo-200 hover:-translate-y-1 transition-all duration-300">
+              Get Started Now <ArrowRight size={22} />
             </Link>
-            <Link to="/about" className="btn btn-secondary text-lg px-10 py-4 rounded-2xl flex items-center justify-center gap-2">
-              Learn More
+            <Link to="/catalog" className="btn btn-secondary text-lg px-12 py-5 rounded-2xl flex items-center justify-center gap-3 hover:-translate-y-1 transition-all duration-300">
+              Browse Catalog
             </Link>
           </div>
           
-          <div className="mt-20 relative w-full max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-2xl border border-gray-200">
-            <div className="bg-gray-100 p-2 flex items-center gap-2 border-b">
-               <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
-               <div className="w-2.5 h-2.5 rounded-full bg-amber-400"></div>
-               <div className="w-2.5 h-2.5 rounded-full bg-emerald-400"></div>
-               <div className="bg-white rounded px-3 py-1 text-[10px] text-gray-400 flex-1 mx-10 text-center">lms-dashboard.vercel.app</div>
+          <div className="mt-20 relative w-full max-w-5xl mx-auto rounded-[2.5rem] overflow-hidden shadow-[0_32px_64px_-16px_rgba(79,70,229,0.2)] border border-gray-100 group">
+            <div className="bg-gray-50 p-3 flex items-center gap-2 border-b">
+               <div className="w-3 h-3 rounded-full bg-red-400"></div>
+               <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+               <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
+               <div className="bg-white rounded-lg px-4 py-1.5 text-xs text-gray-400 flex-1 mx-10 text-center font-bold tracking-tight shadow-sm border border-gray-100">https://library-pro.academic.edu/dashboard</div>
             </div>
-            <img 
-               src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=1200" 
-               alt="Library Dashboard" 
-               className="w-full object-cover h-[500px]"
-            />
+            <div className="relative overflow-hidden aspect-[16/9]">
+               <img 
+                  src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&q=80&w=1200" 
+                  alt="Library Dashboard" 
+                  className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
+               />
+               <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/20 to-transparent pointer-events-none"></div>
+            </div>
           </div>
         </div>
       </section>
+
 
       {/* Features Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

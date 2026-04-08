@@ -66,13 +66,15 @@ const Reports = () => {
         case 'members': endpoint = '/users'; filename = 'member_list'; break;
         case 'transactions': endpoint = '/transactions/active'; filename = 'active_transactions'; break;
         case 'fines': endpoint = '/fines'; filename = 'fines_report'; break;
+        case 'logs': endpoint = '/logs?limit=1000'; filename = 'system_audit_trail'; break;
         default: return;
       }
 
       const { data } = await api.get(endpoint);
-      
+      const rows = type === 'logs' ? data.data : data;
+
       // Flatten data for CSV
-      const flattened = data.map(item => {
+      const flattened = rows.map(item => {
         const flat = { ...item };
         // Handle nested objects for cleaner CSV
         if (item.Author) flat.Author = item.Author.name;
@@ -80,10 +82,13 @@ const Reports = () => {
         if (item.Role) flat.Role = item.Role.name;
         if (item.Book) flat.Book = item.Book.title;
         if (item.Student) flat.Student = item.Student.name;
+        if (item.User) flat.User = item.User.name;
+        if (item.IssuedBook?.Book) flat.Book = item.IssuedBook.Book.title;
         
         // Clean up some fields
         delete flat.createdAt;
         delete flat.updatedAt;
+        delete flat.Author?.__id; // Example cleanup if needed
         return flat;
       });
 
@@ -104,36 +109,44 @@ const Reports = () => {
         <p className="text-gray-500 mt-1">Download detailed data snapshots from your library system.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <ReportCard 
           title="Books Inventory" 
-          description="A complete list of all books, authors, categories, and current availability status." 
+          description="Complete list of all books, authors, and categories." 
           icon={<Book size={24} />} 
           onExport={() => handleExport('books')}
           loading={loading}
         />
         <ReportCard 
           title="Member Registry" 
-          description="Detailed directory of all registered students, staff, and their membership status." 
+          description="Directory of registered students and staff." 
           icon={<Users size={24} />} 
           onExport={() => handleExport('members')}
           loading={loading}
         />
         <ReportCard 
           title="Transaction History" 
-          description="Log of all active issues, due dates, and pending returns across the system." 
+          description="Log of all active issues and pending returns." 
           icon={<Activity size={24} />} 
           onExport={() => handleExport('transactions')}
           loading={loading}
         />
         <ReportCard 
           title="Fines & Collections" 
-          description="Comprehensive report of all generated fines, payment status, and total collections." 
+          description="Report of generated fines and payment status." 
           icon={<TrendingUp size={24} />} 
           onExport={() => handleExport('fines')}
           loading={loading}
         />
+        <ReportCard 
+          title="System Audit Trail" 
+          description="Administrative and operational activity logs." 
+          icon={<Shield size={24} />} 
+          onExport={() => handleExport('logs')}
+          loading={loading}
+        />
       </div>
+
 
       <div className="bg-indigo-600 rounded-2xl p-8 text-white flex flex-col md:flex-row items-center justify-between shadow-lg">
         <div className="mb-6 md:mb-0">

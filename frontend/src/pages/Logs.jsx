@@ -44,11 +44,16 @@ const Logs = () => {
              value={actionFilter}
              onChange={(e) => { setActionFilter(e.target.value); setPage(1); }}
            >
-              <option value="">All Actions</option>
-              <option value="USER_LOGIN">Logins</option>
-              <option value="BOOK_CREATED">Book Creation</option>
-              <option value="BOOK_ISSUED">Book Issued</option>
-              <option value="BOOK_RETURNED">Book Returned</option>
+               <option value="">All Actions</option>
+               <option value="USER_LOGIN">Logins</option>
+               <option value="USER_SIGNUP">Signups</option>
+               <option value="BOOK_CREATED">Book Creation</option>
+               <option value="BOOK_ISSUED">Book Issued</option>
+               <option value="BOOK_RETURNED">Book Returned</option>
+               <option value="FINE_PAID">Fine Payments</option>
+               <option value="AUTHOR_CREATED">Manage Authors</option>
+               <option value="CATEGORY_CREATED">Manage Categories</option>
+               <option value="SETTINGS_UPDATED">System Settings</option>
            </select>
         </div>
       </div>
