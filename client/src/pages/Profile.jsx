@@ -11,20 +11,30 @@ const Profile = () => {
     name: user.name || '',
     phone: user.phone || '',
     address: user.address || '',
+    currentPassword: '',
     password: '',
     confirmPassword: ''
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password && form.password !== form.confirmPassword) {
-      return toast.error('Passwords do not match');
+    
+    if (form.password) {
+      if (!form.currentPassword) {
+        return toast.error('Current password is required to change password');
+      }
+      if (form.password !== form.confirmPassword) {
+        return toast.error('Passwords do not match');
+      }
     }
 
     setLoading(true);
     try {
       const payload = { ...form };
-      if (!payload.password) delete payload.password;
+      if (!payload.password) {
+        delete payload.password;
+        delete payload.currentPassword;
+      }
       delete payload.confirmPassword;
 
       await api.put(`/users/${user.id}`, payload);
@@ -35,13 +45,14 @@ const Profile = () => {
       localStorage.setItem('user', JSON.stringify(updatedUser));
       
       toast.success('Profile updated successfully!');
-      setForm({ ...form, password: '', confirmPassword: '' });
+      setForm({ ...form, currentPassword: '', password: '', confirmPassword: '' });
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to update profile');
     } finally {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-20">
@@ -109,6 +120,17 @@ const Profile = () => {
                <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2 border-b pb-4">
                   <Key size={18} className="text-indigo-600" /> Security
                </h3>
+               <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-4">
+                  <p className="text-sm text-amber-700 font-medium">
+                     Providing your current password is required if you wish to change your login credentials.
+                  </p>
+               </div>
+               <div className="grid grid-cols-1 gap-6">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Current Password</label>
+                    <input type="password" placeholder="Verify your identity" className="input shadow-sm" value={form.currentPassword} onChange={e => setForm({...form, currentPassword: e.target.value})} />
+                  </div>
+               </div>
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">New Password</label>
@@ -120,6 +142,7 @@ const Profile = () => {
                   </div>
                </div>
             </div>
+
 
             <div className="pt-4 flex justify-end">
                <button disabled={loading} className="btn btn-primary px-10 py-4 rounded-xl flex items-center gap-2 text-lg font-bold shadow-lg shadow-indigo-100">

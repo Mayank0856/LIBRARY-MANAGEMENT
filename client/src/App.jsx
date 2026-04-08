@@ -25,6 +25,7 @@ import Fines from './pages/Fines';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
 import Masters from './pages/Masters';
+import Staff from './pages/Staff';
 import Logs from './pages/Logs';
 import Profile from './pages/Profile';
 
@@ -77,6 +78,7 @@ function App() {
           <Route path="reports" element={<Reports />} />
           <Route path="settings" element={<Settings />} />
           <Route path="masters" element={<Masters />} />
+          <Route path="staff" element={<Staff />} />
           <Route path="logs" element={<Logs />} />
           <Route path="profile" element={<Profile />} />
           <Route path="*" element={<Link to="/dashboard" className="hidden" />} />

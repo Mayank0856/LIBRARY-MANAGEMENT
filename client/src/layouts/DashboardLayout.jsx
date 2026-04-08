@@ -3,7 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import { Navigate, Outlet, Link, useLocation } from 'react-router-dom';
 import {
   LogOut, BookOpen, Users, Settings as SettingsIcon, LayoutDashboard,
-  RotateCcw, AlertTriangle, DollarSign, Menu, X, Library, FileText, User as UserIcon
+  RotateCcw, AlertTriangle, DollarSign, Menu, X, Library, FileText, User as UserIcon,
+  ShieldCheck
 } from 'lucide-react';
 
 const NavLink = ({ to, icon, label }) => {
@@ -61,6 +62,7 @@ const DashboardLayout = () => {
           <>
             <p className="text-xs text-gray-500 uppercase px-3 py-2 mt-3 tracking-wider">Admin</p>
             <NavLink to="/masters" icon={<Library size={18} />} label="Master Data" />
+            <NavLink to="/staff" icon={<ShieldCheck size={18} />} label="Staff Management" />
             <NavLink to="/logs" icon={<SettingsIcon size={18} />} label="Activity Logs" />
             <NavLink to="/settings" icon={<SettingsIcon size={18} />} label="System Settings" />
           </>
