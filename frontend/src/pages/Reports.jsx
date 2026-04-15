@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
-import { FileText, Download, TrendingUp, Book, Users, Activity, ExternalLink } from 'lucide-react';
+import { FileText, Download, TrendingUp, Book, Users, Activity, ExternalLink, Shield } from 'lucide-react';
 
 const ReportCard = ({ title, description, icon, onExport, loading }) => (
   <div className="card p-6 flex flex-col justify-between">

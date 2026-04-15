@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import { Search, Loader2, Calendar, User, Activity, ChevronLeft, ChevronRight } from 'lucide-react';
-import format from 'date-fns/format';
+import { format } from 'date-fns';
 
 const Logs = () => {
   const [logs, setLogs] = useState([]);

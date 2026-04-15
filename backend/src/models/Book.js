@@ -41,6 +41,14 @@ const Book = sequelize.define('Book', {
   shelf_location: {
     type: DataTypes.STRING,
     allowNull: true
+  },
+  reader_url: {
+    type: DataTypes.STRING,
+    allowNull: true
+  },
+  class_level: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 });
 

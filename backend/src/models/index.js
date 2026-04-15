@@ -9,6 +9,7 @@ const IssuedBook = require('./IssuedBook');
 const Fine = require('./Fine');
 const Setting = require('./Setting');
 const AuditLog = require('./AuditLog');
+const ReadingProgress = require('./ReadingProgress');
 
 // Relationships
 
@@ -52,6 +53,12 @@ Fine.belongsTo(User, { foreignKey: 'student_id' });
 User.hasMany(AuditLog, { foreignKey: 'user_id' });
 AuditLog.belongsTo(User, { foreignKey: 'user_id' });
 
+// ReadingProgress associations
+User.hasMany(ReadingProgress, { foreignKey: 'student_id' });
+ReadingProgress.belongsTo(User, { foreignKey: 'student_id' });
+Book.hasMany(ReadingProgress, { foreignKey: 'book_id' });
+ReadingProgress.belongsTo(Book, { foreignKey: 'book_id' });
+
 module.exports = {
   sequelize,
   Role,
@@ -63,5 +70,6 @@ module.exports = {
   IssuedBook,
   Fine,
   Setting,
-  AuditLog
+  AuditLog,
+  ReadingProgress
 };

@@ -4,20 +4,20 @@ const sequelize = require('../config/database');
 const IssuedBook = sequelize.define('IssuedBook', {
   issue_date: {
     type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW
+    allowNull: true,
+    defaultValue: null
   },
   due_date: {
     type: DataTypes.DATE,
-    allowNull: false
+    allowNull: true
   },
   return_date: {
     type: DataTypes.DATE,
     allowNull: true
   },
   status: {
-    type: DataTypes.ENUM('Issued', 'Returned', 'Overdue'),
-    defaultValue: 'Issued'
+    type: DataTypes.ENUM('Pending', 'Issued', 'Return Pending', 'Returned', 'Overdue'),
+    defaultValue: 'Pending'
   }
 });
 

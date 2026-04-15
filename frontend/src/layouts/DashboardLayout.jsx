@@ -46,11 +46,15 @@ const DashboardLayout = () => {
         <NavLink to="/dashboard" icon={<LayoutDashboard size={18} />} label="Dashboard" />
         <NavLink to="/books" icon={<BookOpen size={18} />} label="Books Catalog" />
 
+        {!canManage && (
+          <NavLink to="/my-books" icon={<Library size={18} />} label="My Active Books" />
+        )}
+
         {canManage && (
           <>
             <p className="text-xs text-gray-500 uppercase px-3 py-2 mt-3 tracking-wider">Operations</p>
             <NavLink to="/members" icon={<Users size={18} />} label="Members" />
-            <NavLink to="/transactions/issue" icon={<BookOpen size={18} />} label="Issue Book" />
+            <NavLink to="/transactions/issue" icon={<BookOpen size={18} />} label="Verify Requests" />
             <NavLink to="/transactions/return" icon={<RotateCcw size={18} />} label="Return Book" />
             <NavLink to="/overdue" icon={<AlertTriangle size={18} />} label="Overdue Books" />
             <NavLink to="/fines" icon={<DollarSign size={18} />} label="Fines" />

@@ -32,6 +32,11 @@ const Dashboard = () => {
   const { user } = useAuth();
   const [stats, setStats] = useState(null);
 
+  // Generate a deterministic library email from the user's name
+  const libEmail = user?.name
+    ? user.name.toLowerCase().replace(/\s+/g, '.').replace(/[^a-z.]/g, '') + '@libms.edu'
+    : '';
+
   useEffect(() => {
     api.get('/dashboard/stats').then(r => setStats(r.data)).catch(() => {});
   }, []);
@@ -45,6 +50,23 @@ const Dashboard = () => {
         </h1>
         <p className="text-gray-500 mt-1">Welcome back, <strong>{user.name}</strong>! Here's what's happening today.</p>
       </div>
+
+      {/* Library Email Card — Students only */}
+      {user.role === 'Student' && (
+        <div className="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-xl p-5 flex items-center gap-4 shadow-lg shadow-indigo-200">
+          <div className="bg-white/20 rounded-xl p-3 shrink-0">
+            <span className="text-2xl">📧</span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-indigo-100 text-xs font-bold uppercase tracking-widest">Your Library Email</p>
+            <p className="text-white font-black text-lg truncate">{libEmail}</p>
+            <p className="text-indigo-200 text-xs mt-0.5">Use this ID for all library correspondence</p>
+          </div>
+          <div className="ml-auto bg-white/10 px-4 py-2 rounded-xl border border-white/20 shrink-0 hidden md:block">
+            <p className="text-white text-xs font-black uppercase tracking-widest">Active</p>
+          </div>
+        </div>
+      )}
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -97,8 +119,8 @@ const Dashboard = () => {
         <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Quick Student Actions</h2>
           <div className="flex flex-wrap gap-3">
-            <Link to="/catalog" className="btn btn-primary">Browse Catalog</Link>
-            <Link to="/books" className="btn btn-secondary">My History</Link>
+            <Link to="/books" className="btn btn-primary">Browse Catalog</Link>
+            <Link to="/my-books" className="btn btn-secondary">My Active Books</Link>
             <Link to="/contact" className="bg-emerald-600 text-white btn hover:bg-emerald-700">Contact Librarian</Link>
           </div>
         </div>

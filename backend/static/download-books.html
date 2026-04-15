@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Library Book Downloader</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #0f0f1a; color: #e5e7eb; min-height: 100vh; padding: 2rem; }
+    h1 { font-size: 1.8rem; font-weight: 900; color: #fff; }
+    p { color: #9ca3af; margin-top: .5rem; font-size: .9rem; }
+    .step { background: #16213e; border: 1px solid #ffffff15; border-radius: 1rem; padding: 1.5rem; margin: 1.5rem 0; }
+    .step h2 { font-size: 1rem; font-weight: 800; color: #818cf8; margin-bottom: .75rem; }
+    code { background: #1e293b; border: 1px solid #334155; border-radius: .4rem; padding: .2rem .5rem; font-size: .85rem; color: #7dd3fc; }
+    .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .book-card { background: #1e293b; border: 1px solid #ffffff10; border-radius: .75rem; padding: 1rem; }
+    .book-card h3 { font-size: .85rem; font-weight: 700; color: #fff; margin-bottom: .5rem; }
+    .book-card p { font-size: .75rem; color: #6b7280; margin-bottom: .75rem; }
+    a.dl-btn {
+      display: inline-block; padding: .4rem 1rem; border-radius: .5rem;
+      background: #4f46e5; color: #fff; font-size: .75rem; font-weight: 800;
+      text-decoration: none; transition: background .2s;
+    }
+    a.dl-btn:hover { background: #4338ca; }
+    .folder-path { background: #1e293b; border: 1px solid #334155; border-radius: .5rem;
+      padding: .75rem 1rem; font-family: monospace; font-size: .8rem; color: #7dd3fc;
+      word-break: break-all; margin-top: .5rem; }
+    .category { font-size: .65rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em;
+      padding: .2rem .5rem; border-radius: 9999px; display: inline-block; margin-bottom: .5rem; }
+    .cat-classic { background: #1e3a5f; color: #60a5fa; }
+    .cat-ncert   { background: #14532d; color: #4ade80; }
+  </style>
+</head>
+<body>
+
+<h1>📚 Library Book PDF Downloader</h1>
+<p>Click each link to download the PDF, then save it in the <strong>backend/static/books/</strong> folder with the exact filename shown.</p>
+
+<div class="step">
+  <h2>📁 Step 1 — Open this folder in File Explorer</h2>
+  <div class="folder-path">C:\Users\ASUS\OneDrive\Desktop\CODING\TECHINOVATE\Ctrl-build-projects\library-management-system\backend\static\books</div>
+</div>
+
+<div class="step">
+  <h2>⬇️ Step 2 — Download each book and save with the exact filename shown</h2>
+  <p>Right-click → Save link as OR click the button, then rename the file if needed.</p>
+
+  <div class="book-grid" id="grid"></div>
+</div>
+
+<div class="step">
+  <h2>🌱 Step 3 — After all downloads, reseed the database</h2>
+  <p>Open a terminal in your project root and run:</p><br/>
+  <code>node backend/src/seeders/real_books_seeder.js</code>
+</div>
+
+<script>
+const BOOKS = [
+  // Public domain classics (Internet Archive)
+  { cat:'classic', title:"Alice's Adventures in Wonderland",     file:'alice-in-wonderland.pdf',      url:'https://archive.org/download/alicesadventures00carriala/alicesadventures00carriala.pdf' },
+  { cat:'classic', title:'Treasure Island',                       file:'treasure-island.pdf',          url:'https://archive.org/download/treasureisland00stevuoft/treasureisland00stevuoft.pdf' },
+  { cat:'classic', title:'The Adventures of Sherlock Holmes',     file:'sherlock-holmes.pdf',          url:'https://archive.org/download/adventuresofsher00doyl/adventuresofsher00doyl.pdf' },
+  { cat:'classic', title:'The Adventures of Tom Sawyer',          file:'tom-sawyer.pdf',               url:'https://archive.org/download/adventuresoftoms00twaiiala/adventuresoftoms00twaiiala.pdf' },
+  { cat:'classic', title:'Oliver Twist',                          file:'oliver-twist.pdf',             url:'https://archive.org/download/olivertwist00dick_0/olivertwist00dick_0.pdf' },
+  { cat:'classic', title:'Great Expectations',                    file:'great-expectations.pdf',       url:'https://archive.org/download/greatexpectation00dickuoft/greatexpectation00dickuoft.pdf' },
+  { cat:'classic', title:'Pride and Prejudice',                   file:'pride-and-prejudice.pdf',      url:'https://archive.org/download/prideandprejudic00aust_0/prideandprejudic00aust_0.pdf' },
+  { cat:'classic', title:'Frankenstein',                          file:'frankenstein.pdf',             url:'https://archive.org/download/frankensteinorro00shell/frankensteinorro00shell.pdf' },
+  { cat:'classic', title:'Dracula',                               file:'dracula.pdf',                  url:'https://archive.org/download/draculabramstoke00bram/draculabramstoke00bram.pdf' },
+  { cat:'classic', title:'Moby Dick',                             file:'moby-dick.pdf',                url:'https://archive.org/download/mobydickorwhale00melviala/mobydickorwhale00melviala.pdf' },
+  { cat:'classic', title:'Romeo and Juliet',                      file:'romeo-and-juliet.pdf',         url:'https://archive.org/download/romeoandjuliet00shak_1/romeoandjuliet00shak_1.pdf' },
+  { cat:'classic', title:'Hamlet',                                file:'hamlet.pdf',                   url:'https://archive.org/download/hamlet00shak_2/hamlet00shak_2.pdf' },
+  { cat:'classic', title:'Arabian Nights',                        file:'arabian-nights.pdf',           url:'https://archive.org/download/arabiannightsent00lang/arabiannightsent00lang.pdf' },
+  { cat:'classic', title:'Twenty Thousand Leagues Under the Sea', file:'twenty-thousand-leagues.pdf',  url:'https://archive.org/download/twentythousandlea00vern_1/twentythousandlea00vern_1.pdf' },
+  { cat:'classic', title:'Adventures of Huckleberry Finn',        file:'huckleberry-finn.pdf',         url:'https://archive.org/download/adventuresofhuck1884twai/adventuresofhuck1884twai.pdf' },
+  { cat:'classic', title:'Little Women',                          file:'little-women.pdf',             url:'https://archive.org/download/littlewomen00alco_0/littlewomen00alco_0.pdf' },
+  { cat:'classic', title:'The Count of Monte Cristo',             file:'count-of-monte-cristo.pdf',    url:'https://archive.org/download/countofmontecristo00duma/countofmontecristo00duma.pdf' },
+  { cat:'classic', title:'The Jungle Book',                       file:'jungle-book.pdf',              url:'https://archive.org/download/junglebook00kipl_0/junglebook00kipl_0.pdf' },
+  { cat:'classic', title:"Gulliver's Travels",                    file:'gulliver-travels.pdf',         url:'https://archive.org/download/gulliverstravels00swif_0/gulliverstravels00swif_0.pdf' },
+  { cat:'classic', title:'The Secret Garden',                     file:'secret-garden.pdf',            url:'https://archive.org/download/secretgarden00burn_0/secretgarden00burn_0.pdf' },
+
+  // NCERT (official ncert.nic.in — Chapter 1 of each book)
+  { cat:'ncert', title:'First Flight Ch.1 (Class 10 English)',  file:'ncert-first-flight-class10.pdf', url:'https://ncert.nic.in/textbook/pdf/jfl101.pdf' },
+  { cat:'ncert', title:'Mathematics Ch.1 (Class 10)',           file:'ncert-math-class10.pdf',         url:'https://ncert.nic.in/textbook/pdf/jemh101.pdf' },
+  { cat:'ncert', title:'Science Ch.1 (Class 10)',               file:'ncert-science-class10.pdf',      url:'https://ncert.nic.in/textbook/pdf/jesc101.pdf' },
+  { cat:'ncert', title:'Beehive Ch.1 (Class 9 English)',        file:'ncert-beehive-class9.pdf',       url:'https://ncert.nic.in/textbook/pdf/ieel101.pdf' },
+  { cat:'ncert', title:'Marigold (Class 1 English)',            file:'ncert-marigold-class1.pdf',      url:'https://ncert.nic.in/textbook/pdf/aeal1dd.pdf' },
+];
+
+const grid = document.getElementById('grid');
+BOOKS.forEach(b => {
+  const catLabel = b.cat === 'ncert' ? '<span class="category cat-ncert">NCERT</span>' : '<span class="category cat-classic">Gutenberg Classic</span>';
+  grid.innerHTML += `
+    <div class="book-card">
+      ${catLabel}
+      <h3>${b.title}</h3>
+      <p>Save as: <strong style="color:#e5e7eb">${b.file}</strong></p>
+      <a class="dl-btn" href="${b.url}" download="${b.file}" target="_blank">⬇ Download PDF</a>
+    </div>`;
+});
+</script>
+</body>
+</html>

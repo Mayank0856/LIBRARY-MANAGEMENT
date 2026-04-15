@@ -28,6 +28,7 @@ import Masters from './pages/Masters';
 import Staff from './pages/Staff';
 import Logs from './pages/Logs';
 import Profile from './pages/Profile';
+import MyBooks from './pages/MyBooks';
 
 const NotFound = () => (
   <div className="text-center py-20 bg-white min-h-screen">
@@ -70,6 +71,7 @@ function App() {
         <Route path="/" element={<DashboardLayout />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="books" element={<Books />} />
+          <Route path="my-books" element={<MyBooks />} />
           <Route path="members" element={<Members />} />
           <Route path="transactions/issue" element={<IssueBook />} />
           <Route path="transactions/return" element={<ReturnBook />} />
